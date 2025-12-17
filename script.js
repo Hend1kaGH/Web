@@ -191,17 +191,19 @@ function closeModal() {
 // --- 6. LOGIKA SUBMIT FLAG & HINT ---
 function submitFlag() {
     const userInput = document.getElementById('flag-input').value;
-    // Cari mission mana yang sedang dibuka di modal (asumsi kamu simpan id-nya)
-    const currentMission = missions.find(m => m.title === document.getElementById('m-title').innerText);
+    
+    // Gunakan variabel 'challenges' (bukan 'missions')
+    // Dan cari berdasarkan 'currentChallengeId' yang sedang aktif
+    const currentMission = challenges.find(m => m.id === currentChallengeId);
 
-    if (userInput === currentMission.flag) {
-        currentMission.isSolved = true; // Tandai sudah selesai
-        playSuccess(); // Mainkan suara sukses
+    if (currentMission && userInput === currentMission.flag) {
+        // Mainkan suara sukses (pastikan fungsi playSuccess sudah dibuat atau gunakan sfxSuccess)
+        if (sfxSuccess) sfxSuccess.play();
         
         alert("CONGRATULATIONS! FLAG ACCEPTED.");
         
         closeModal();
-        renderMissions(); // Gambar ulang list tantangan agar tanda "Solved" muncul
+        renderMissions(); 
     } else {
         alert("WRONG FLAG. TRY AGAIN!");
     }
