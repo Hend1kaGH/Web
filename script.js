@@ -233,3 +233,30 @@ setInterval(() => {
     }
 }, 1000);
 
+
+// --- 8. Waktu ---
+function updateHeroDate() {
+    const dateEl = document.querySelector('.hero-date'); // Mengambil elemen di HTML
+    if (!dateEl) return;
+
+    const sekarang = new Date();
+    
+    // Opsi format Indonesia
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    
+    // Mengubah tanggal ke string format Indonesia (ID)
+    const tanggalFormatted = sekarang.toLocaleDateString('id-ID', options).toUpperCase();
+    
+    dateEl.innerText = tanggalFormatted;
+}
+
+// Panggil fungsi ini saat window di-load
+window.addEventListener('load', () => {
+    updateHeroDate();
+    // ... fungsi init lainnya
+});
