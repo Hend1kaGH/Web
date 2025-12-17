@@ -53,17 +53,16 @@
 
         
         <div class="about-window">
-            <h3 class="neon-text">Apa itu CTF?</h3>
-            <div class="desc-box">
-                <p id="about-text-typing">Capture The Flag atau CTF adalah lomba mencari harta karun digital di mana kamu berperan sebagai detektif komputer yang bertugas mencari kode rahasia bernama "Flag". Dalam tantangan ini, kamu akan belajar cara memecahkan teka-teki rahasia, memeriksa file tersembunyi, hingga mencari celah di sebuah situs web untuk mendapatkan poin. Melalui HCTF.OS, kamu bisa belajar menjadi ahli komputer yang hebat dengan cara yang seru, jujur, dan pastinya sangat menantang untuk diselesaikan.</p>
-            </div>
-        </div>
+    <h3 class="neon-text" style="margin-bottom: 15px;">Apa itu CTF?</h3>
+    <div class="desc-box terminal-effect">
+        <p id="about-text-typing"></p>
     </div>
+</div>
 </section>
 
         <footer style="text-align: center; padding: 40px 20px; color: var(--gray); font-size: 8px; opacity: 0.7;">
             <p style="margin-bottom: 10px;">&copy; 2025 HCTF.OS OPERATING SYSTEM</p>
-            <p>DESIGNED BY <span class="neon-pink" style="color: #ff00ff;">Hendika Adhi Wibawanta</span> // VAPOR_PURPLE CORE</p>
+            <p>DESIGNED BY <span class="neon-pink" style="color: #ff00ff;">Hendika Adhi Wibawanta</span>+6285800352368</p>
         </footer>
     </main>
 
@@ -99,6 +98,33 @@
             </div>
         </div>
     </div>
+
+    <div id="custom-alert" class="modal-overlay hidden" style="z-index: 999;">
+    <div class="modal-card" style="width: 400px; border: 2px solid var(--cyan); box-shadow: 0 0 20px var(--cyan);">
+        <div class="modal-top" style="background: var(--cyan);">
+            <span id="alert-title" style="color: #000;">SYSTEM MESSAGE</span>
+            <button onclick="closeAlert()" class="close-btn">[X]</button>
+        </div>
+        <div class="modal-main" style="padding: 20px; text-align: center;">
+            <div id="alert-content" class="desc-box" style="margin-bottom: 20px; border-left: none; border: 1px solid var(--cyan);">
+                </div>
+            <button onclick="closeAlert()" class="cta-btn" style="padding: 10px 20px; font-size: 10px;">CONTINUE</button>
+        </div>
+    </div>
+</div>
+
+<div id="custom-alert" class="modal-overlay hidden" style="z-index: 9999;">
+    <div class="modal-card alert-neon">
+        <div class="modal-top">
+            <span id="alert-title">SYSTEM MESSAGE</span>
+            <button onclick="closeAlert()" class="close-btn">[X]</button>
+        </div>
+        <div class="modal-main">
+            <div id="alert-content" class="alert-desc-box"></div>
+            <button onclick="closeAlert()" class="cta-btn alert-continue">CONTINUE</button>
+        </div>
+    </div>
+</div>
 
     <script src="script.js"></script>
 </body>
