@@ -1,3 +1,16 @@
+// --- SECURITY CHECK (Taruh di paling atas) ---
+(function checkAuth() {
+    if (sessionStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "login.html"; // Lempar balik ke login jika belum auth
+    }
+})();
+
+// Fungsi Logout (Bisa dipasang di tombol navbar baru)
+function logout() {
+    sessionStorage.clear();
+    window.location.href = "login.html";
+}
+
 const aboutText = `
 CTF (Capture The Flag) adalah kompetisi keamanan siber
 di mana peserta memecahkan berbagai tantangan seperti
@@ -92,6 +105,7 @@ const challenges = [
     }
 ];
 
+
 // --- 2. SISTEM AUDIO ---
 const sfxHover = document.getElementById('sfx-hover');
 const sfxClick = document.getElementById('sfx-click');
@@ -146,9 +160,13 @@ if (pageId === 'about') {
 }
 
 // --- 4. RENDER KARTU TANTANGAN ---
+// --- 1. FUNGSI RENDER (Update Panah & Teks) ---
 function renderMissions() {
     const container = document.getElementById('mission-content');
     if (!container) return;
+
+    const activeUsername = sessionStorage.getItem("currentUser");
+    const user = userDatabase.find(u => u.user === activeUsername);
 
     container.innerHTML = "";
     const categories = [...new Set(challenges.map(c => c.cat))];
@@ -156,25 +174,65 @@ function renderMissions() {
     categories.forEach(cat => {
         const section = document.createElement('div');
         section.className = "category-group";
+        
+        const missionsHTML = challenges.filter(c => c.cat === cat).map(c => {
+            const isSolved = user && user.solved && user.solved.includes(c.id);
+            const statusClass = isSolved ? "is-solved" : "";
+            const coinText = isSolved ? "DONE" : c.pts;
+
+            return `
+                <div class="card-pixel ${statusClass}" onclick="openModal(${c.id})" onmouseenter="playHover()">
+                    <h4>${c.title}</h4>
+                    <div style="display: flex; align-items: center; gap: 8px; z-index: 2;">
+                        <img src="assets/coin.png" style="width: 16px; height: 16px; image-rendering: pixelated;">
+                        <span style="color: #ffd700; font-size: 10px; font-family: 'Press Start 2P';">${coinText}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
 
         section.innerHTML = `
-            <span class="category-label">> ${cat}</span>
-            <div class="mission-grid">
-                ${challenges.filter(c => c.cat === cat).map(c => `
-                    <div class="card" onclick="openModal(${c.id})" onmouseenter="playHover()">
-                        <span class="card-id">ID:0${c.id}</span>
-                        <h4 class="card-title">${c.title}</h4>
-
-                        <div class="coin-box">
-                            <img src="assets/coin.png" class="coin-icon">
-                            <span class="coin-value">${c.pts}</span>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
+            <span class="cat-label-retro"><span class="cat-arrow">»</span> ${cat}</span>
+            <div class="mission-grid-rect">${missionsHTML}</div>
         `;
         container.appendChild(section);
     });
+}
+
+// --- 2. FUNGSI SUBMIT (Anti-Bug Koin) ---
+function submitFlag() {
+    const userInput = document.getElementById('flag-input').value.trim();
+    const currentMission = challenges.find(m => m.id === currentChallengeId);
+    const activeUsername = sessionStorage.getItem("currentUser");
+    const user = userDatabase.find(u => u.user === activeUsername);
+
+    if (currentMission && userInput === currentMission.flag) {
+        if (!user) return;
+
+        // PROTEKSI: Satu akun satu kali koin
+        if (user.solved && user.solved.includes(currentChallengeId)) {
+            if (typeof playClick === "function") playClick();
+            showAlert("ALREADY SOLVED", "Poin sudah pernah diambil!", false);
+            closeModal();
+            return;
+        }
+
+        if (document.getElementById('sfx-success')) document.getElementById('sfx-success').play();
+        
+        if (!user.solved) user.solved = [];
+        user.solved.push(currentChallengeId); // Tandai sebagai selesai
+        user.score += currentMission.pts;
+
+        showAlert("ACCESS GRANTED", `SUCCESS! +${currentMission.pts} COINS ADDED.`, true);
+        closeModal();
+        
+        initUserSession(); 
+        if (typeof renderScoreboard === 'function') renderScoreboard();
+        renderMissions();   
+    } else {
+        if (typeof playClick === "function") playClick();
+        showAlert("ACCESS DENIED", "FLAG SALAH!");
+    }
 }
 
 // --- 5. LOGIKA MODAL ---
@@ -236,26 +294,6 @@ function closeAlert() {
     document.getElementById('custom-alert').classList.add('hidden');
 }
 
-// --- UPDATE LOGIKA SUBMIT FLAG ---
-function submitFlag() {
-    const userInput = document.getElementById('flag-input').value;
-    
-    // Mencari data tantangan berdasarkan ID yang disimpan saat modal dibuka
-    const currentMission = challenges.find(m => m.id === currentChallengeId);
-
-    if (currentMission && userInput === currentMission.flag) {
-        if (sfxSuccess) sfxSuccess.play();
-        
-        // Panggil Custom Alert yang kita buat sebelumnya
-        showAlert("ACCESS GRANTED", "CONGRATULATIONS! FLAG ACCEPTED.", true);
-        
-        closeModal();
-        renderMissions(); 
-    } else {
-        // Tampilkan pesan salah lewat Custom Alert
-        showAlert("ACCESS DENIED", "WRONG FLAG. TRY AGAIN!");
-    }
-}
 
 // --- UPDATE LOGIKA HINT ---
 function showHint() {
@@ -376,3 +414,69 @@ function startAboutTyping() {
     }, 35); // kecepatan typing (ms)
 }
 
+// --- Fungsi Sinkronisasi User & Koin ---
+function initUserSession() {
+    const activeUser = sessionStorage.getItem("currentUser") || "GUEST";
+    // Cari data user dari database.js (pastikan database.js sudah dipanggil di HTML)
+    const userData = typeof userDatabase !== 'undefined' ? userDatabase.find(u => u.user === activeUser) : null;
+
+    if (document.getElementById('nav-username')) {
+        document.getElementById('nav-username').innerText = activeUser.toUpperCase();
+    }
+    if (document.getElementById('nav-coin') && userData) {
+        document.getElementById('nav-coin').innerText = userData.score + " PTS";
+    }
+}
+
+// --- Fungsi Render Tabel Scoreboard ---
+function renderScoreboard() {
+    const tbody = document.getElementById('scoreboard-body');
+    if (!tbody || typeof userDatabase === 'undefined') return;
+
+    // Urutkan skor tertinggi
+    const sorted = [...userDatabase].sort((a, b) => b.score - a.score);
+    
+    tbody.innerHTML = sorted.map((u, i) => `
+        <tr style="border-bottom: 1px solid rgba(255,0,255,0.2);">
+            <td style="padding: 15px;">#${i + 1}</td>
+            <td style="padding: 15px;">${u.user.toUpperCase()}</td>
+            <td style="padding: 15px; color: gold;">${u.score} PTS</td>
+        </tr>
+    `).join('');
+}
+
+
+// Modifikasi fungsi changePage agar me-render scoreboard saat diklik
+const originalChangePage = changePage;
+changePage = function(pageId) {
+    if (pageId === 'scoreboard') renderScoreboard();
+    originalChangePage(pageId);
+}
+
+// Pastikan init dipanggil saat load
+window.addEventListener('load', () => {
+    initUserSession();
+});
+
+const canvas = document.getElementById('hacker-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*";
+const drops = Array(Math.ceil(canvas.width / 14)).fill(1);
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(12, 8, 36, 0.1)"; // Background pudar
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ff00ff"; // Warna Ungu/Pink pudar
+    ctx.font = "14px monospace";
+
+    drops.forEach((y, i) => {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * 14, y * 14);
+        if (y * 14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+    });
+}
+setInterval(drawMatrix, 50);

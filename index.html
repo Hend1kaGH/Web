@@ -14,18 +14,46 @@
     <audio id="sfx-char-voice" src="audio/karakter_ngomong.mp3" preload="auto" loop></audio>
     <div class="grid-bg"></div>
 
-    <nav id="top-navbar">
-        <div class="nav-container">
-            <div class="brand">HCTF.<span class="neon-pink">OS</span></div>
-            <div class="links">
-                <button id="nav-home" onclick="changePage('home')" onmouseenter="playHover()" class="nav-item">HOME</button>
-                <button id="nav-missions" onclick="changePage('missions')" onmouseenter="playHover()" class="nav-item">CHALLENGES</button>
-                <button id="nav-about" onclick="changePage('about')" onmouseenter="playHover()" class="nav-item">ABOUT</button>
-            </div>
-            <div id="clock">00:00:00</div>
+<nav id="top-navbar">
+    <div class="nav-container">
+        <div class="brand">HCTF.<span class="neon-pink">OS</span></div>
+        <div class="links">
+            <button onclick="changePage('home')" class="nav-item">HOME</button>
+            <button onclick="changePage('missions')" class="nav-item">CHALLENGES</button>
+            <button onclick="changePage('scoreboard')" class="nav-item">SCOREBOARD</button>
+            <button onclick="changePage('about')" class="nav-item">ABOUT</button>
         </div>
-    </nav>
+        <div class="user-profile-nav" style="display: flex; align-items: center; gap: 15px;">
+            <div id="clock" style="font-size: 9px;">00:00:00</div>
+            <span id="nav-username" class="neon-pink" style="font-size: 9px;">GUEST</span>
+            <span id="nav-coin" style="color: gold; font-size: 9px;">0 PTS</span>
+            <button onclick="logout()" class="logout-btn" style="background:none; border:none; color:var(--pink); cursor:pointer; font-family:inherit; font-size:9px;">[LOGOUT]</button>
+        </div>
+    </div>
+</nav>
 
+<section id="scoreboard" class="page hidden">
+    <div class="container">
+        <h2 class="section-title">Global Ranking</h2>
+        <div class="about-window" style="max-width: 800px; margin: 0 auto; width: 100%;">
+            <table class="pixel-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead style="background: var(--pink); color: #000;">
+                    <tr>
+                        <th style="padding: 10px;">RANK</th>
+                        <th style="padding: 10px;">AGENT</th>
+                        <th style="padding: 10px;">POINTS</th>
+                    </tr>
+                </thead>
+                <tbody id="scoreboard-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<div class="grid-bg"></div>
+<canvas id="hacker-canvas"></canvas>
+    
     <main id="app-viewport">
         <section id="home" class="page">
             <div class="hero">
@@ -126,6 +154,7 @@
     </div>
 </div>
 
+    <script src="database.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
