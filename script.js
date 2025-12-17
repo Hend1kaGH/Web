@@ -4,10 +4,10 @@ const challenges = [
         id: 1, 
         title: "Base64", 
         cat: "CRYPTOGRAPHY", 
-        desc: "Kami menemukan sebuah pesan rahasia yang diubah menjadi kode Base64. Kamu hanya perlu mengembalikannya menjadi teks biasa.\nPesan rahasia = SENVVEZ7YjRzZTY0X2lzX3RvMF8zYXN5fQ==", 
+        desc: "Kami menemukan sebuah pesan rahasia yang diubah menjadi kode Base64. Kamu hanya perlu mengembalikannya menjadi teks biasa.\nPesan rahasia = SENURntiNHNlNjRfaXNfdG8wXzNhc3l9", 
         pts: 200,
         flag: "HCTF{b4se64_is_to0_3asy}",
-        hint: "Gunakan tool 'Base64 Decoder' online. Karakter '==' di akhir adalah ciri khasnya."
+        hint: "Gunakan tool 'Base64 Decoder' online."
     },
     { 
         id: 2, 
