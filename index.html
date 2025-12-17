@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HendikaCTF</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="crt-overlay">
+    <audio id="sfx-hover" src="audio/hover.mp3" preload="auto"></audio>
+    <audio id="sfx-click" src="audio/click.mp3" preload="auto"></audio>
+    <audio id="sfx-success" src="audio/success.mp3" preload="auto"></audio>
+    <audio id="sfx-char-voice" src="audio/karakter_ngomong.mp3" preload="auto" loop></audio>
+    <div class="grid-bg"></div>
+
+    <nav id="top-navbar">
+        <div class="nav-container">
+            <div class="brand">HCTF.<span class="neon-pink">OS</span></div>
+            <div class="links">
+                <button id="nav-home" onclick="changePage('home')" onmouseenter="playHover()" class="nav-item">HOME</button>
+                <button id="nav-missions" onclick="changePage('missions')" onmouseenter="playHover()" class="nav-item">CHALLENGES</button>
+                <button id="nav-about" onclick="changePage('about')" onmouseenter="playHover()" class="nav-item">ABOUT</button>
+            </div>
+            <div id="clock">00:00:00</div>
+        </div>
+    </nav>
+
+    <main id="app-viewport">
+        <section id="home" class="page">
+            <div class="hero">
+                <p class="pixel-label">Ready to</p>
+                <h1 class="glitch-text">HCTF</h1>
+                <p class="hero-date">SELASA, 16 DESEMBER 2025</p>
+                <div class="cta-wrapper">
+                    <button class="cta-btn" onclick="changePage('missions')" onmouseenter="playHover()">MULAI TANTANGAN</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="missions" class="page hidden">
+            <div class="container">
+                <h2 class="section-title">Challenges</h2>
+                <div id="mission-content"></div>
+            </div>
+        </section>
+
+      <section id="about" class="page hidden">
+    <div class="container about-wrapper">
+        <div class="character-side">
+            <img src="assets/hacker-char.png" alt="Mascot" class="pixel-char">
+        </div>
+
+        
+        <div class="about-window">
+            <h3 class="neon-text">Apa itu CTF?</h3>
+            <div class="desc-box">
+                <p id="about-text-typing">Capture The Flag atau CTF adalah lomba mencari harta karun digital di mana kamu berperan sebagai detektif komputer yang bertugas mencari kode rahasia bernama "Flag". Dalam tantangan ini, kamu akan belajar cara memecahkan teka-teki rahasia, memeriksa file tersembunyi, hingga mencari celah di sebuah situs web untuk mendapatkan poin. Melalui HCTF.OS, kamu bisa belajar menjadi ahli komputer yang hebat dengan cara yang seru, jujur, dan pastinya sangat menantang untuk diselesaikan.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <footer style="text-align: center; padding: 40px 20px; color: var(--gray); font-size: 8px; opacity: 0.7;">
+            <p style="margin-bottom: 10px;">&copy; 2025 HCTF.OS OPERATING SYSTEM</p>
+            <p>DESIGNED BY <span class="neon-pink" style="color: #ff00ff;">Hendika Adhi Wibawanta</span> // VAPOR_PURPLE CORE</p>
+        </footer>
+    </main>
+
+    <div id="modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-top">
+                <span id="m-cat">CAT_NAME</span>
+                <button onclick="closeModal()" onmouseenter="playHover()" class="close-btn">[X]</button>
+            </div>
+            <div class="modal-main">
+                <h2 id="m-title">TITLE</h2>
+
+                <div class="modal-coin-display" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                    <img src="assets/coin.png" alt="coin" style="width: 20px; height: 20px; object-fit: contain;">
+                    <span id="m-pts" style="font-size: 14px; color: #ffcc00;">0</span>
+                </div>
+                <div class="desc-box">
+                    <p id="m-desc">Briefing data loading...</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <button onclick="showHint()" onmouseenter="playHover()" class="hint-btn" style="cursor: pointer; background: transparent; border: 1px solid #00ffff; color: #00ffff; font-family: 'Press Start 2P'; font-size: 8px; padding: 5px 10px;">
+                        [ MINTA_HINT ]
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <a id="m-link" href="#" download class="dl-link" onmouseenter="playHover()">Download file</a>
+                    <div class="input-group">
+                        <span class="input-prefix">bn-linLST</span>
+                        <input type="text" id="flag-input" placeholder="HCTF{flag_here}">
+                        <button onclick="submitFlag()" onmouseenter="playHover()" class="verify-btn">submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

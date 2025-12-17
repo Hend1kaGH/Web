@@ -1,0 +1,656 @@
+:root {
+    --purple: #1b1464;
+    --dark: #0c0824;
+    --pink: #ff00ff;
+    --cyan: #00ffff;
+    --white: #ffffff;
+    --gray: #4a4a4a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--dark);
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    overflow-y: auto;
+    min-height: 100vh;
+}
+
+/* =========================
+   DYNAMIC RETRO BACKGROUND
+   ========================= */
+
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    /* Grid Ungu Transparan lo */
+    background-image:
+        linear-gradient(rgba(255, 0, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    background-color: var(--dark); /* Dasar gelap solid */
+    overflow: hidden;
+}
+
+/* Lapisan Cahaya yang Lewat (Scanning Light) */
+.grid-bg::after {
+    content: "";
+    position: absolute;
+    top: -100%; /* Mulai dari luar layar atas */
+    left: 0;
+    width: 100%;
+    height: 100px; /* Tebal cahaya */
+    
+    /* Gradasi cahaya neon cyan/putih */
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0, 255, 255, 0.05) 40%,
+        rgba(0, 255, 255, 0.2) 50%,
+        rgba(0, 255, 255, 0.05) 60%,
+        transparent
+    );
+    
+    /* Jalankan animasi scan */
+    animation: scanning 4s linear infinite;
+    pointer-events: none;
+}
+
+/* Keyframe buat ngergerakin cahaya dari atas ke bawah */
+@keyframes scanning {
+    0% {
+        top: -100px;
+    }
+    30% {
+        top: 100%; /* Lewat sampai bawah */
+    }
+    100% {
+        top: 100%; /* Jeda waktu sebelum muncul lagi di atas */
+    }
+}
+
+/* Efek Grain/Noise biar makin retro (Opsional) */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/Noise_600x600.png');
+    opacity: 0.02; /* Tipis banget biar gak ganggu mata */
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+
+#top-navbar {
+    position: sticky;
+    top: 0;
+    background: rgba(12, 8, 36, 0.9);
+    padding: 25px 50px;
+    border-bottom: 2px solid var(--pink);
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: var(--gray);
+    font-family: inherit;
+    font-size: 10px;
+    margin: 0 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-item.active {
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+}
+
+/* =========================
+   HERO
+   ========================= */
+
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.pixel-label {
+    margin-bottom: 5px; /* Jarak sedikit ke judul HCTF */
+    letter-spacing: 2px;
+}
+
+/* Mengatur Judul HCTF agar tidak terlalu memakan ruang atas/bawah */
+.glitch-text {
+    font-size: 4rem; /* Sesuaikan ukuran */
+    margin: 10px 0; /* Memberikan jarak 10px di atas dan di bawah judul */
+    line-height: 1.2; /* Mengatur tinggi baris agar tidak bertumpuk */
+}
+
+/* Mengatur Tanggal */
+.hero-date {
+    margin-top: 5px;
+    margin-bottom: 30px; /* Jarak lebih jauh ke tombol "MULAI TANTANGAN" */
+    opacity: 0.8;
+}
+
+.cta-wrapper {
+    margin-top: 60px;
+}
+
+.cta-btn {
+    background: var(--cyan);
+    border: none;
+    color: #000;
+    padding: 25px 40px;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 var(--pink);
+    transition: 0.2s;
+}
+
+.cta-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--pink);
+}
+
+/* =========================
+   MISSIONS SECTION
+   ========================= */
+
+.container {
+    padding: 40px 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* >>> FIX UTAMA: TITLE TENGAH <<< */
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 26px;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-shadow: none;
+}
+
+.category-group {
+    margin-bottom: 50px;
+}
+
+.category-label {
+    color: var(--pink);
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* =========================
+   RETRO PIXEL CARD (BLUE)
+   ========================= */
+
+.mission-grid {
+    display: grid;
+    /* Grid lebih rapat biar mirip dashboard jadul */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: 30px;
+}
+
+.card {
+    /* Warna Biru Terang sesuai gambar referensi lo */
+    background: #3498db; 
+    border: none;
+    padding: 30px 20px;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    transition: 0.1s;
+    
+    /* Pixel Shadow Ungu/Gelap di bawah kanan */
+    box-shadow: 8px 8px 0px #1b1464; 
+    
+    /* Efek Scanlines (Garis-garis TV) */
+    background-image: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.1) 50%
+    ), linear-gradient(
+        90deg, 
+        rgba(255, 0, 0, 0.02), 
+        rgba(0, 255, 0, 0.01), 
+        rgba(0, 0, 255, 0.02)
+    );
+    background-size: 100% 3px, 3px 100%;
+}
+
+
+.card:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px #1b1464;
+    filter: brightness(1.1);
+}
+
+.card-id {
+    display: none; /* Di gambar lo ID-nya gak kelihatan, jadi gue hide */
+}
+
+.card-title {
+    margin: 0 0 15px 0;
+    font-size: 11px;
+    color: #fff;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+    text-transform: lowercase; /* Sesuai style di gambar lo */
+    letter-spacing: 1px;
+}
+
+/* Koin diletakkan di bawah judul dengan center alignment */
+.coin-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.coin-icon {
+    width: 18px;
+    height: 18px;
+    image-rendering: pixelated;
+}
+
+.coin-value {
+    font-size: 10px;
+    color: #fff; /* Di gambar lo angkanya putih */
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+}
+
+/* Tambahan: Glow di sekitar container grid biar makin mantap */
+#mission-content {
+    padding: 20px;
+    filter: drop-shadow(0 0 10px rgba(52, 152, 219, 0.2));
+}
+
+/* =========================
+   COIN DISPLAY (CARD)
+   ========================= */
+
+.coin-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.coin-icon {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 4px rgba(255, 204, 0, 0.6));
+}
+
+.coin-value {
+    font-size: 9px;
+    color: #ffcc00;
+    text-shadow: 0 0 6px rgba(255, 204, 0, 0.5);
+}
+
+/* =========================
+   MODAL
+   ========================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.modal-card {
+    background: var(--dark);
+    border: 2px solid var(--white);
+    width: 750px;
+    max-width: 90%;
+}
+
+.modal-top {
+    background: var(--white);
+    color: #000;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+}
+
+/* =========================
+   UPDATE MODAL & GLOW EFFECT
+   ========================= */
+
+/* Pastikan konten di dalam modal punya aliran yang jelas */
+.modal-main {
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Jaga semua elemen di tengah */
+}
+
+/* Beri jarak yang cukup pada judul agar tidak mepet ke koin */
+#m-title {
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 1.4;
+    font-size: 18px; /* Sedikit diperbesar biar tegas */
+}
+
+/* Perbaikan Coin Badge: Punya ruang sendiri & tidak menabrak judul */
+.modal-coin-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 204, 0, 0.1);
+    border: 1px solid rgba(255, 204, 0, 0.4);
+    padding: 10px 20px;
+    width: fit-content;
+    margin: 15px auto 25px auto; /* Margin atas-bawah yang aman */
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    border-radius: 2px;
+}
+
+/* Box Deskripsi dengan Efek Glowing Neon Pink */
+.desc-box {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 0, 255, 0.3); /* Border pink tipis */
+    border-left: 5px solid var(--pink); /* Accent border kiri tetap ada */
+    padding: 25px;
+    margin: 10px 0 30px 0;
+    width: 100%;
+    
+    /* Efek Glow Luar (Outer) dan Dalam (Inset) */
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.25), 
+                inset 0 0 15px rgba(255, 0, 255, 0.1);
+    
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efek interaktif pas di-hover biar makin 'idup' */
+.desc-box:hover {
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.45), 
+                inset 0 0 20px rgba(255, 0, 255, 0.2);
+    border-color: var(--pink);
+}
+
+/* Detail teks di dalam box agar lebih scannable */
+#m-desc {
+    line-height: 1.8;
+    font-size: 11px;
+    color: #eeeeee;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+/* =========================
+   MODAL COIN BADGE
+   ========================= */
+
+.modal-coin-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 204, 0, 0.08);
+    border: 1px solid rgba(255, 204, 0, 0.35);
+    padding: 10px 16px;
+    width: fit-content;
+    margin: 0 auto 20px;
+}
+
+/* =========================
+   INPUT
+   ========================= */
+
+.modal-footer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    border: 1px solid var(--cyan);
+}
+
+.input-prefix {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    font-size: 10px;
+    color: var(--gray);
+    border-right: 1px solid var(--cyan);
+}
+
+input {
+    background: transparent;
+    border: none;
+    padding: 15px;
+    color: var(--cyan);
+    font-family: inherit;
+    font-size: 10px;
+    flex: 1;
+    outline: none;
+}
+
+.verify-btn {
+    background: var(--pink);
+    border: none;
+    padding: 0 25px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+/* =========================
+   PAGE ANIMATION
+   ========================= */
+
+.page {
+    display: none;
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+.page.active {
+    display: block;
+    animation: fadeInUp 0.4s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================
+   STYLE DOWNLOAD LINK (NEON)
+   ========================= */
+
+.dl-link {
+    display: inline-block;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    color: var(--cyan); /* Pake cyan biar kontras sama pink */
+    text-decoration: none;
+    font-size: 10px;
+    border: 1px solid var(--cyan);
+    background: rgba(0, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    width: fit-content;
+}
+
+.dl-link:hover {
+    background: var(--cyan);
+    color: var(--dark);
+    box-shadow: 0 0 15px var(--cyan);
+    transform: translateY(-2px);
+}
+
+/* Biar ada icon panah dikit biar dapet vibe 'download'-nya */
+.dl-link::before {
+    content: "[↓] ";
+    font-weight: bold;
+}
+
+/* Update Footer Modal biar rapi */
+.modal-footer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Download link ke tengah */
+    gap: 15px;
+}
+
+/* =========================
+   SIMPLIFIED HINT & SUBMIT
+   ========================= */
+
+/* Tombol Hint dibuat lebih 'ghostly' dan simple */
+.hint-btn {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--cyan) !important; /* Cukup garis bawah */
+    color: var(--cyan) !important;
+    font-size: 8px !important;
+    padding: 5px 0 !important;
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0.7;
+}
+
+.hint-btn:hover {
+    opacity: 1;
+    text-shadow: 0 0 8px var(--cyan);
+    letter-spacing: 1px;
+}
+
+/* Input Group dibuat lebih compact */
+.input-group {
+    display: flex;
+    border: 1px solid rgba(0, 255, 255, 0.3); /* Border cyan tipis */
+    background: rgba(0, 0, 0, 0.3);
+    max-width: 500px; /* Batasi biar nggak kepanjangan */
+    margin: 0 auto;
+}
+
+.input-prefix {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 12px;
+    font-size: 8px;
+    color: var(--cyan);
+    border-right: 1px solid rgba(0, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+}
+
+input#flag-input {
+    background: transparent;
+    padding: 12px;
+    color: var(--white);
+    font-size: 10px;
+    flex: 1;
+}
+
+/* Tombol Submit dibuat simpel tanpa neon yang terlalu mencolok */
+.verify-btn {
+    background: var(--pink) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 0 20px !important;
+    font-size: 9px !important;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.verify-btn:hover {
+    filter: brightness(1.2);
+    box-shadow: -5px 0 10px rgba(255, 0, 255, 0.3);
+}
+
+/* Bikin layout jadi kiri-kanan */
+.about-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px; /* Jarak antara karakter dan kotak */
+    margin-top: 50px;
+}
+
+/* Styling karakter biar tetep tajam (pixelated) */
+.pixel-char {
+    width: 250px; /* Atur ukurannya di sini */
+    image-rendering: pixelated; 
+    filter: drop-shadow(0 0 10px var(--pink));
+}
+
+/* Kecilin kotak about-nya */
+.about-window {
+    max-width: 550px; /* Ukuran kotak jadi lebih compact */
+    flex: 1;
+}
+
+/* Ubah wrapper-nya biar posisi karakter pas di tengah box */
+.about-wrapper {
+    display: flex;
+    align-items: center; /* Karakter bakal sejajar tengah secara vertikal */
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+/* Atur posisi gambar karakternya */
+.pixel-char {
+    width: 250px; 
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 15px var(--pink));
+    /* Hapus margin-bottom kalau sebelumnya lo ada tambahin manual */
+    margin: 0; 
+}
+
+/* Sesuaikan lebar window-nya */
+.about-window {
+    flex: 1;
+    max-width: 600px;
+    margin: 0;
+}
