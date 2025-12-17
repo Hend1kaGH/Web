@@ -28,7 +28,7 @@ const challenges = [
         cat: "CRYPTOGRAPHY", 
         desc: "rolling xor.\npassword ada di hints", 
         pts: 300,
-        flag: "HCTF{xss_injection_success}",
+        flag: "CSSC{r0ll_r0rr_x0rr_ftw!!!!#}",
         file: "assets/SOAR.zip",
         hint: "i6db}Brg*u&3iBnh=FgF=?fD@P1E!G"
     },
@@ -38,7 +38,7 @@ const challenges = [
         cat: "CRYPTOGRAPHY", 
         desc: "Let's learn about mapping and symmetric encryption.\npassword ada di hints", 
         pts: 300,
-        flag: "HCTF{aes_256_bit_encrypted}",
+        flag: "CSSC{s1mpl3_m4pp1ng_1s_cr4yzzz}",
         file: "assets/MAPZ.zip",
         hint: "t}/n)5d#qT(?Vt%HD4WRY5@DRkKRZd"
     },
@@ -48,7 +48,7 @@ const challenges = [
         cat: "Digital Forensics", 
         desc: "uncover a hidden message stored inside image details.\npassword ada di hints", 
         pts: 300,
-        flag: "HCTF{aes_256_bit_encrypted}",
+        flag: "CSSC{h1dd3n_3x1f_b45364_json}",
         file: "assets/SILENT_METADATA.zip",
         hint: "S=GGZ:xxBpg)edP4+Zg6J?cwi0h,f3"
     },
@@ -58,7 +58,7 @@ const challenges = [
         cat: "Digital Forensics", 
         desc: "basic artifact extraction from captured network activity.\npassword ada di hints", 
         pts: 300,
-        flag: "HCTF{aes_256_bit_encrypted}",
+        flag: "CSSC{4dv4nc3d_p4ck3t_r3c0n}",
         file: "assets/PACKET_TRAIL.zip",
         hint: "h/k.abp0![UWD?rW{5#044.Tg5QXpV"
     },
@@ -68,7 +68,7 @@ const challenges = [
         cat: "Reverse Engineering", 
         desc: "apa ini?\npassword ada di hints", 
         pts: 300,
-        flag: "HCTF{aes_256_bit_encrypted}",
+        flag: "CSSC{1ntr0_t0_cyth0n}",
         file: "assets/WHAT_IS_IT.zip",
         hint: "c+VGV%Bg)Hgf!HTLvzF-%Z}3VUv5:6"
     },
@@ -78,7 +78,7 @@ const challenges = [
         cat: "Reverse Engineering", 
         desc: "very simple flag checker.\npassword ada di hints", 
         pts: 300,
-        flag: "HCTF{aes_256_bit_encrypted}",
+        flag: "CSSC{t1d4k_4k4n_pud4r_b1nt4ng_d1_angk4sa_y4ng_1nd4h_m44p_y4pp1ng_h3h3h3_:>}",
         file: "assets/ORION_CHECKER.zip",
         hint: "G)/)D::K!G@1e7/z*#=@_pr;u=AQ:p"
     },
@@ -375,3 +375,4 @@ function startAboutTyping() {
         }
     }, 35); // kecepatan typing (ms)
 }
+
