@@ -654,3 +654,114 @@ input#flag-input {
     max-width: 600px;
     margin: 0;
 }
+
+/* =========================
+   Card hint
+   ========================= */
+
+#custom-alert .desc-box {
+    display: block;               /* Memastikan box mengambil lebar penuh */
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--cyan);
+    padding: 30px;                /* Memberi jarak dalam yang lebih luas */
+    margin: 15px 0 25px 0;
+    
+    /* Pengaturan Spasi dan Tipografi */
+    word-wrap: break-word;     
+    white-space: pre-wrap;        /* Menjaga spasi asli dan baris baru */
+    line-height: 2;               /* Menambah jarak antar baris teks */
+    letter-spacing: 1.5px;        /* Memberi napas pada font pixel */
+    text-align: center;
+    font-size: 10px;              /* Ukuran standar agar tidak terlalu besar/kecil */
+}
+
+#custom-alert .modal-card {
+    width: 550px;                 /* Sedikit diperlebar agar teks tidak terlalu menumpuk */
+    max-width: 95%;
+    border: 2px solid var(--cyan);
+    background: var(--dark);      /* Menggunakan variabel warna gelap */
+}
+  
+#custom-alert .modal-main {
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Container Utama Alert */
+.alert-neon {
+    border: 2px solid var(--pink) !important; /* Garis ungu pink */
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.6), 
+                inset 0 0 10px rgba(255, 0, 255, 0.4) !important;
+    width: 550px !important;
+    background: var(--dark) !important;
+}
+
+/* Header Alert */
+#custom-alert .modal-top {
+    background: var(--pink);
+    color: #000;
+    font-weight: bold;
+}
+
+/* Box Deskripsi dengan Spasi Bagus */
+.alert-desc-box {
+    width: 100%;
+    padding: 30px;
+    margin: 20px 0;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    
+    /* Perbaikan Spasi */
+    white-space: pre-wrap;       /* Menjaga spasi asli */
+    line-height: 2;              /* Jarak antar baris lega */
+    letter-spacing: 1.5px;       /* Jarak antar huruf */
+    text-align: center;
+    font-size: 10px;
+    color: var(--white);
+    word-break: break-word;
+}
+
+/* Tombol Continue */
+.alert-continue {
+    padding: 15px 30px !important;
+    font-size: 10px !important;
+    box-shadow: 4px 4px 0 var(--cyan) !important; /* Kontras dengan garis ungu */
+}
+
+
+/* Efek Kursor Berkedip */
+#about-text-typing::after {
+    content: "█"; /* Karakter blok terminal */
+    margin-left: 5px;
+    color: var(--cyan);
+    animation: blink 0.8s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to { visibility: hidden; }
+}
+
+/* Animasi tambahan untuk Box About */
+.terminal-effect {
+    position: relative;
+    overflow: hidden;
+    border-left: 3px solid var(--cyan);
+    padding-left: 20px !important;
+    background: rgba(0, 255, 255, 0.05);
+}
+
+/* Garis Scanline Tipis yang bergerak */
+.terminal-effect::before {
+    content: " ";
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 255, 255, 0.1) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    z-index: 2;
+}
