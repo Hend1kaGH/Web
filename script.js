@@ -1,3 +1,16 @@
+const aboutText = `
+CTF (Capture The Flag) adalah kompetisi keamanan siber
+di mana peserta memecahkan berbagai tantangan seperti
+cryptography, web exploitation, forensics, dan reverse engineering.
+
+Setiap tantangan memiliki sebuah "FLAG"
+yang harus ditemukan untuk mendapatkan poin.
+
+Think like a hacker.
+Learn by breaking.
+Have fun.
+`;
+
 // --- 1. DATA CHALLENGES (Termasuk Flag, File, dan Hint) ---
 const challenges = [
     { 
@@ -123,7 +136,13 @@ function changePage(pageId) {
     if (navBtn) navBtn.classList.add('active');
 
     if (pageId === 'missions') renderMissions();
-    window.scrollTo(0, 0);
+
+if (pageId === 'about') {
+    setTimeout(() => {
+        startAboutTyping();
+    }, 300); // delay dikit biar animasi page selesai
+}
+
 }
 
 // --- 4. RENDER KARTU TANTANGAN ---
@@ -189,34 +208,64 @@ function closeModal() {
 }
 
 // --- 6. LOGIKA SUBMIT FLAG & HINT ---
+// --- FUNGSI KONTROL ALERT CUSTOM ---
+function showAlert(title, message, isSuccess = false) {
+    const alertModal = document.getElementById('custom-alert');
+    const titleEl = document.getElementById('alert-title');
+    const contentEl = document.getElementById('alert-content');
+    
+    titleEl.innerText = title;
+    contentEl.innerText = message;
+    
+    // Ganti warna border berdasarkan sukses atau hint
+    const card = alertModal.querySelector('.modal-card');
+    if (isSuccess) {
+        card.style.borderColor = "var(--pink)";
+        card.style.boxShadow = "0 0 20px var(--pink)";
+        document.getElementById('m-title').style.color = "var(--pink)";
+    } else {
+        card.style.borderColor = "var(--cyan)";
+        card.style.boxShadow = "0 0 20px var(--cyan)";
+    }
+
+    alertModal.classList.remove('hidden');
+}
+
+function closeAlert() {
+    playClick();
+    document.getElementById('custom-alert').classList.add('hidden');
+}
+
+// --- UPDATE LOGIKA SUBMIT FLAG ---
 function submitFlag() {
     const userInput = document.getElementById('flag-input').value;
     
-    // Gunakan variabel 'challenges' (bukan 'missions')
-    // Dan cari berdasarkan 'currentChallengeId' yang sedang aktif
+    // Mencari data tantangan berdasarkan ID yang disimpan saat modal dibuka
     const currentMission = challenges.find(m => m.id === currentChallengeId);
 
     if (currentMission && userInput === currentMission.flag) {
-        // Mainkan suara sukses (pastikan fungsi playSuccess sudah dibuat atau gunakan sfxSuccess)
         if (sfxSuccess) sfxSuccess.play();
         
-        alert("CONGRATULATIONS! FLAG ACCEPTED.");
+        // Panggil Custom Alert yang kita buat sebelumnya
+        showAlert("ACCESS GRANTED", "CONGRATULATIONS! FLAG ACCEPTED.", true);
         
         closeModal();
         renderMissions(); 
     } else {
-        alert("WRONG FLAG. TRY AGAIN!");
+        // Tampilkan pesan salah lewat Custom Alert
+        showAlert("ACCESS DENIED", "WRONG FLAG. TRY AGAIN!");
     }
 }
 
+// --- UPDATE LOGIKA HINT ---
 function showHint() {
     playClick();
     const data = challenges.find(x => x.id === currentChallengeId);
 
     if (data && data.hint) {
-        alert("HINT: " + data.hint);
+        showAlert("DECRYPTED HINT", data.hint);
     } else {
-        alert("Tidak ada petunjuk untuk misi ini.");
+        showAlert("SYSTEM ERROR", "No hint available for this mission.");
     }
 }
 
@@ -233,8 +282,6 @@ setInterval(() => {
     }
 }, 1000);
 
-
-// --- 8. Waktu ---
 function updateHeroDate() {
     const dateEl = document.querySelector('.hero-date'); // Mengambil elemen di HTML
     if (!dateEl) return;
@@ -260,3 +307,71 @@ window.addEventListener('load', () => {
     updateHeroDate();
     // ... fungsi init lainnya
 });
+
+// Variabel untuk menyimpan interval typing agar bisa dihentikan jika perlu
+let typingInterval;
+
+function showAlert(title, message, isSuccess = false) {
+    const alertModal = document.getElementById('custom-alert');
+    const titleEl = document.getElementById('alert-title');
+    const contentEl = document.getElementById('alert-content');
+    const card = alertModal.querySelector('.modal-card');
+
+    // Reset konten dan hentikan typing sebelumnya
+    clearInterval(typingInterval);
+    contentEl.innerText = "";
+    
+    titleEl.innerText = title;
+
+    // Pengaturan warna tema (Pink untuk sukses, Cyan untuk hint)
+    if (isSuccess) {
+        card.style.borderColor = "var(--pink)";
+        card.style.boxShadow = "0 0 20px var(--pink)";
+        titleEl.parentElement.style.backgroundColor = "var(--pink)";
+    } else {
+        card.style.borderColor = "var(--cyan)";
+        card.style.boxShadow = "0 0 20px var(--cyan)";
+        titleEl.parentElement.style.backgroundColor = "var(--cyan)";
+    }
+
+    alertModal.classList.remove('hidden');
+
+    // Efek Mengetik Otomatis
+    let i = 0;
+    typingInterval = setInterval(() => {
+        if (i < message.length) {
+            contentEl.innerText += message.charAt(i);
+            i++;
+        } else {
+            clearInterval(typingInterval);
+        }
+    }, 30); // Kecepatan mengetik (30ms per karakter)
+}
+
+let aboutTypingInterval;
+
+function startAboutTyping() {
+    const textEl = document.getElementById("about-text-typing");
+    if (!textEl) return;
+
+    // Reset typing sebelumnya
+    clearInterval(aboutTypingInterval);
+    textEl.innerText = "";
+
+    const voice = document.getElementById("sfx-char-voice");
+    if (voice) {
+        voice.currentTime = 0;
+        voice.play().catch(() => {});
+    }
+
+    let i = 0;
+    aboutTypingInterval = setInterval(() => {
+        if (i < aboutText.length) {
+            textEl.innerText += aboutText.charAt(i);
+            i++;
+        } else {
+            clearInterval(aboutTypingInterval);
+            if (voice) voice.pause();
+        }
+    }, 35); // kecepatan typing (ms)
+}
